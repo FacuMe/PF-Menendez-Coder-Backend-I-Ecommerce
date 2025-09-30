@@ -1,0 +1,70 @@
+[
+  {
+    "id": 1,
+    "title": "Zapatillas Running Pro",
+    "description": "Zapatillas deportivas livianas para entrenamiento y running.",
+    "code": "RUNPRO123",
+    "price": 25999,
+    "status": true,
+    "stock": 50,
+    "category": "calzado",
+    "thumbnails": [
+      "/images/products/zapatillas1.jpg",
+      "/images/products/zapatillas1_alt.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Camiseta Técnica DryFit",
+    "description": "Camiseta de entrenamiento transpirable con tecnología DryFit.",
+    "code": "TSHIRT456",
+    "price": 7999,
+    "status": true,
+    "stock": 120,
+    "category": "indumentaria",
+    "thumbnails": [
+      "/images/products/camiseta1.jpg"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Mochila Deportiva XL",
+    "description": "Mochila grande con compartimento especial para laptop y zapatillas.",
+    "code": "BAG789",
+    "price": 15499,
+    "status": true,
+    "stock": 35,
+    "category": "accesorios",
+    "thumbnails": [
+      "/images/products/mochila1.jpg",
+      "/images/products/mochila1_alt.jpg"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Botella Térmica 750ml",
+    "description": "Botella de acero inoxidable con tapa hermética y doble pared.",
+    "code": "BOTTLE321",
+    "price": 5499,
+    "status": true,
+    "stock": 200,
+    "category": "accesorios",
+    "thumbnails": [
+      "/images/products/botella1.jpg"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Auriculares Bluetooth Sport",
+    "description": "Auriculares inalámbricos resistentes al agua con cancelación de ruido.",
+    "code": "HEAD999",
+    "price": 18999,
+    "status": false,
+    "stock": 0,
+    "category": "tecnologia",
+    "thumbnails": [
+      "/images/products/auriculares1.jpg",
+      "/images/products/auriculares1_alt.jpg"
+    ]
+  }
+]
