@@ -54,7 +54,6 @@ function validatePartialProduct(product) {
   if (product.thumbnails !== undefined) {
     if (!Array.isArray(product.thumbnails) || !product.thumbnails.every(t => typeof t === "string")) return false;
   }
-
   return true;
 }
 
@@ -99,6 +98,7 @@ app.get("/products/:pid", async (req, res) => {
   }
 });
 
+
 app.post("/products", async (req, res) => {
   const product = req.body;
 
@@ -113,6 +113,7 @@ app.post("/products", async (req, res) => {
     res.send({ error: "Error while adding product" });
   }
 });
+
 
 app.put("/products/:pid", async (req, res) => {
   const { pid } = req.params;
@@ -144,6 +145,7 @@ app.put("/products/:pid", async (req, res) => {
   }
 });
 
+
 app.delete("/products/:pid", async (req, res) => {
   const { pid } = req.params;
 
@@ -171,31 +173,55 @@ app.get("/carts", (req, res)=>{
 })
 
 app.post("/carts", async (req, res) => {
-    const newCart = await CartsManager.addCart();
-    res.send(newCart);
+  try {
+      const newCart = await CartsManager.addCart();
+      res.send(newCart);
+    } catch (error) {
+      res.send({ error: "Error while creating cart" });
+    }
 });
 
 app.get("/carts/:cid", async (req, res) => {
-    const { cid } = req.params;
+  const { cid } = req.params;
+
+  if (!validateId(cid)) {
+    return res.send({ error: "Invalid cart ID" });
+  }
+
+  try {
     const cart = await CartsManager.getCartById(Number(cid));
     if (!cart) {
       return res.send({ error: "Cart not found" });
     }
     res.send(cart.products);
+  } catch (error) {
+    res.send({ error: "Error while getting cart" });
+  }
 });
 
 app.post("/carts/:cid/product/:pid", async (req, res) => {
-    const { cid, pid } = req.params;
+  const { cid, pid } = req.params;
 
+  if (!validateId(cid) || !validateId(pid)) {
+    return res.send({ error: "Invalid cart ID or product ID" });
+  }
+
+  try {
     const product = await ProductsManager.getProductById(Number(pid));
-    if (!product) return res.send({ error: "Product not found" });
+    if (!product) {
+      return res.send({ error: "Product not found" });
+    }
 
     const updatedCart = await CartsManager.addProductToCart(Number(cid), Number(pid));
-    if (!updatedCart) return res.send({ error: "Cart not found" });
+    if (!updatedCart){
+      return res.send({ error: "Cart not found" });
+    } 
 
     res.send(updatedCart);
+  } catch (error) {
+    res.send({ error: "Error while updating cart" });
+  }
 });
-
 
 //servidor
 const server=app.listen(PORT, ()=>{

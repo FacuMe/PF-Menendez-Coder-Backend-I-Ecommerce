@@ -66,5 +66,19 @@
                "/images/products/auriculares1.jpg",
                "/images/products/auriculares1_alt.jpg"
           ]
+     },
+     {
+          "id": 6,
+          "title": "REMERA MANGA CORTA",
+          "description": "Remera de algodón",
+          "code": "R001",
+          "price": 2800,
+          "status": true,
+          "stock": 8,
+          "category": "ropa",
+          "thumbnails": [
+               "img1.jpg",
+               "img2.jpg"
+          ]
      }
 ]
