@@ -1,5 +1,6 @@
 const express=require("express")
 const { ProductsManager } = require("./dao/ProductsManager.js")
+const { CartsManager } = require("./dao/CartsManager.js");
 
 const PORT=8080
  
@@ -9,6 +10,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 ProductsManager.path="./src/data/products.json"
+CartsManager.path="./src/data/carts.json"
 
 //home
 app.get("/", (req, res)=>{
@@ -165,10 +167,37 @@ app.delete("/products/:pid", async (req, res) => {
 
 //carts
 app.get("/carts", (req, res)=>{
-
     res.send(`Carts Page`)
 })
 
+app.post("/carts", async (req, res) => {
+    const newCart = await CartsManager.addCart();
+    res.send(newCart);
+});
+
+app.get("/carts/:cid", async (req, res) => {
+    const { cid } = req.params;
+    const cart = await CartsManager.getCartById(Number(cid));
+    if (!cart) {
+      return res.send({ error: "Cart not found" });
+    }
+    res.send(cart.products);
+});
+
+app.post("/carts/:cid/product/:pid", async (req, res) => {
+    const { cid, pid } = req.params;
+
+    const product = await ProductsManager.getProductById(Number(pid));
+    if (!product) return res.send({ error: "Product not found" });
+
+    const updatedCart = await CartsManager.addProductToCart(Number(cid), Number(pid));
+    if (!updatedCart) return res.send({ error: "Cart not found" });
+
+    res.send(updatedCart);
+});
+
+
+//servidor
 const server=app.listen(PORT, ()=>{
     console.log(`Server online in port ${PORT}`)
 })
