@@ -1,9 +1,17 @@
-<h1>¡Bienvenido a nuestra web de compras!</h1>
+<h1 class="page-title">¡Bienvenido a nuestra web de compras!</h1>
 <hr>
-<h1>Lista de todos los productos</h1>
 
-<ul id="product-list">
+<h2 class="section-title">Lista de todos los productos</h2>
+
+<ol class="product-list">
     {{#each products}}
-    <li>{{this.title}} - ${{this.price}}</li>
+    <li>
+        <div class="product-item">
+            <span class="product-title">{{this.title}}</span>
+            <span class="product-price">${{this.price}}</span>
+        </div>
+    </li>
     {{/each}}
-</ul>
+</ol>
+
+<link rel="stylesheet" href="/css/styles.css">
