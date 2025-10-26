@@ -28,7 +28,7 @@ class ProductsManager{
     static async addProduct(product){
         const { title, description, code, price, status, stock, category, thumbnails } = product;
 
-        if(!title || !description || !code || !price || !status || !stock || !category || !thumbnails){
+        if(!title || !description || !code || !price || status === undefined || !stock || !category || !thumbnails){
             throw new Error(`title | description | code | price | status | stock | category | thumbnails are required`)
         }
 

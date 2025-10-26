@@ -1,0 +1,9 @@
+<h1>¡Bienvenido a nuestra web de compras!</h1>
+<hr>
+<h1>Lista de todos los productos</h1>
+
+<ul id="product-list">
+    {{#each products}}
+    <li>{{this.title}} - ${{this.price}}</li>
+    {{/each}}
+</ul>

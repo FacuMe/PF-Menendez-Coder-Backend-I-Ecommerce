@@ -1,0 +1,46 @@
+.page-title, .form-title {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.product-list {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.product-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.add-product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    margin: 20px auto 50px auto;
+}
+
+.add-product-form label {
+    display: flex;
+    align-items: center;
+}
+
+.add-product-form input[type="checkbox"] {
+    margin-right: 5px;
+}

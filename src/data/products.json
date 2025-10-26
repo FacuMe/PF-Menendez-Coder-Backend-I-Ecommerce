@@ -68,13 +68,13 @@
           ]
      },
      {
-          "id": 6,
-          "title": "REMERA MANGA CORTA",
+          "id": 10,
+          "title": "REMERA",
           "description": "Remera de algodón",
-          "code": "R001",
-          "price": 2800,
+          "code": "R007",
+          "price": 2500,
           "status": true,
-          "stock": 8,
+          "stock": 10,
           "category": "ropa",
           "thumbnails": [
                "img1.jpg",
