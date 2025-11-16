@@ -7,12 +7,75 @@ export const router=Router()
 
 router.get('/',async(req,res)=>{
 
+    // try {
+    //     let products = await ProductsMongoManager.getProducts()
+    //     res.setHeader('Content-Type','application/json')
+    //     res.status(200).json({products})
+    // } catch (error) {
+    //     responseError(error, res)
+    // }
+
     try {
-        let products = await ProductsMongoManager.getProducts()
-        res.setHeader('Content-Type','application/json')
-        res.status(200).json({products})
+        let {
+            limit = 10,
+            page = 1,
+            sort,
+            query
+        } = req.query;
+
+        limit = Number(limit);
+        page = Number(page);
+
+        let filter = {};
+        if (query) {
+            if (query === "available") {
+                filter.status = true;
+            } else if (query === "unavailable") {
+                filter.status = false;
+            } else {
+                filter.category = query;
+            }
+        }
+
+        let sortOption = {};
+        if (sort === "asc") sortOption.price = 1;
+        if (sort === "desc") sortOption.price = -1;
+
+        const result = await ProductsMongoManager.getPaginatedProducts(
+            filter,
+            {
+                limit,
+                page,
+                sort: sortOption,
+                lean: true
+            }
+        );
+
+        const baseURL = `${req.protocol}://${req.get("host")}/api/products`;
+
+        const prevLink = result.hasPrevPage
+            ? `${baseURL}?page=${result.prevPage}&limit=${limit}`
+            : null;
+
+        const nextLink = result.hasNextPage
+            ? `${baseURL}?page=${result.nextPage}&limit=${limit}`
+            : null;
+
+        return res.status(200).json({
+            status: "success",
+            payload: result.docs,
+            totalPages: result.totalPages,
+            prevPage: result.prevPage,
+            nextPage: result.nextPage,
+            page: result.page,
+            hasPrevPage: result.hasPrevPage,
+            hasNextPage: result.hasNextPage,
+            prevLink,
+            nextLink
+        });
+
     } catch (error) {
-        responseError(error, res)
+        responseError(error, res);
     }
 })
 

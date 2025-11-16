@@ -1,0 +1,77 @@
+<h1 class="page-title">Carrito</h1>
+<hr>
+
+<div class="container">
+    {{#if cart.products.length}}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each cart.products}}
+            <tr>
+                <td>{{this.product.title}}</td>
+                <td class="price">${{this.product.price}}</td>
+                <td>
+                    <input type="number" min="1" value="{{this.quantity}}" data-id="{{this.product._id}}" class="quantity-input">
+                </td>
+                <td class="subtotal"></td>
+                <td>
+                    <button class="btn btn-danger remove-product" data-id="{{this.product._id}}">Eliminar</button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <button class="btn btn-warning empty-cart">Vaciar carrito</button>
+    {{else}}
+    <p>El carrito está vacío</p>
+    {{/if}}
+</div>
+
+<script>
+const cid = "{{cart._id}}";
+
+// Calcular subtotales
+document.querySelectorAll("tbody tr").forEach(row => {
+    const price = parseFloat(row.querySelector(".price").textContent.replace("$",""));
+    const quantity = parseInt(row.querySelector(".quantity-input").value);
+    row.querySelector(".subtotal").textContent = `$${price * quantity}`;
+});
+
+// Eliminar producto
+document.querySelectorAll(".remove-product").forEach(btn => {
+    btn.addEventListener("click", async () => {
+        const pid = btn.dataset.id;
+        await fetch(`/api/carts/${cid}/product/${pid}`, { method: "DELETE" });
+        location.reload();
+    });
+});
+
+// Cambiar cantidad
+document.querySelectorAll(".quantity-input").forEach(input => {
+    input.addEventListener("change", async () => {
+        const pid = input.dataset.id;
+        const quantity = input.value;
+        await fetch(`/api/carts/${cid}/product/${pid}`, {
+            method: "PUT",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({ quantity })
+        });
+        location.reload();
+    });
+});
+
+// Vaciar carrito
+document.querySelector(".empty-cart")?.addEventListener("click", async () => {
+    await fetch(`/api/carts/${cid}/products`, { method: "DELETE" });
+    location.reload();
+});
+</script>

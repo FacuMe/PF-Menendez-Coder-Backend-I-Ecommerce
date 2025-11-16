@@ -2,6 +2,7 @@ import { Router } from "express";
 import { isValidObjectId } from "mongoose";
 import { CartsMongoManager } from "../dao/CartsMongoManager.js";
 import { responseError } from "../utils.js";
+import { productsModel } from "../dao/models/productsModel.js";
 
 export const router = Router();
 
@@ -103,6 +104,47 @@ router.put("/:cid/product/:pid", async (req, res) => {
     try {
         const cart = await CartsMongoManager.updateProductQuantity(cid, pid, quantity);
         return res.status(200).json({payload: "Cantidad actualizada", cart});
+    } catch (error) {
+        responseError(error, res);
+    }
+});
+
+router.put("/:cid", async (req, res) => {
+    const { cid } = req.params;
+    const { products } = req.body; 
+
+    if (!isValidObjectId(cid)) {
+        return res.status(400).json({ error: "ID de carrito inválido" });
+    }
+
+    if (!Array.isArray(products)) {
+        return res.status(400).json({ error: "Debe enviarse un array de productos" });
+    }
+
+    try {
+        const cart = await CartsMongoManager.getCartById(cid);
+        if (!cart) {
+            return res.status(404).json({ error: "Carrito no encontrado" });
+        }
+
+        for (const item of products) {
+            if (!item.product || !item.quantity) {
+                return res.status(400).json({ error: "Cada producto debe tener id y cantidad" });
+            }
+
+            const exists = await productsModel.findById(item.product);
+            if (!exists) {
+                return res.status(400).json({ error: `Producto con id ${item.product} no existe` });
+            }
+
+            if (item.quantity < 1) {
+                return res.status(400).json({ error: `Cantidad inválida para el producto ${item.product}` });
+            }
+        }
+
+        const updatedCart = await CartsMongoManager.updateAllProducts(cid, products);
+
+        return res.status(200).json({ payload: "Carrito actualizado con nuevos productos", cart: updatedCart });
     } catch (error) {
         responseError(error, res);
     }

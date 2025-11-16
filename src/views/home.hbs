@@ -1,4 +1,4 @@
-<h1 class="page-title">¡Bienvenido a nuestra web de compras!</h1>
+{{!-- <h1 class="page-title">¡Bienvenido a nuestra web de compras!</h1>
 <hr>
 
 <h2 class="section-title">Lista de todos los productos</h2>
@@ -14,4 +14,59 @@
     {{/each}}
 </ol>
 
-<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/styles.css"> --}}
+
+<h1 class="page-title">¡Bienvenido a nuestra web de compras!</h1>
+<hr>
+
+<h2 class="section-title">Lista de productos</h2>
+
+<div class="container">
+    <div class="row">
+        {{#each products}}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                {{#if this.thumbnails.[0]}}
+                <img src="{{this.thumbnails.[0]}}" class="card-img-top" alt="{{this.title}}">
+                {{/if}}
+                <div class="card-body">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">{{this.description}}</p>
+                    <p class="card-text"><strong>Precio:</strong> ${{this.price}}</p>
+                    <p class="card-text"><strong>Stock:</strong> {{this.stock}}</p>
+                    <a href="/products/{{this._id}}" class="btn btn-primary mb-1">Ver detalle</a>
+                    <button class="btn btn-success add-to-cart" data-id="{{this._id}}">Agregar al carrito</button>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {{#if hasPrevPage}}
+            <li class="page-item">
+                <a class="page-link" href="?page={{prevPage}}&limit={{limit}}">Anterior</a>
+            </li>
+            {{/if}}
+            <li class="page-item disabled"><span class="page-link">{{page}}</span></li>
+            {{#if hasNextPage}}
+            <li class="page-item">
+                <a class="page-link" href="?page={{nextPage}}&limit={{limit}}">Siguiente</a>
+            </li>
+            {{/if}}
+        </ul>
+    </nav>
+</div>
+
+<script>
+document.querySelectorAll(".add-to-cart").forEach(btn=>{
+    btn.addEventListener("click", async()=>{
+        const pid = btn.dataset.id;
+        const cid = "691961f2175cb8dcb247d597"; 
+        const res = await fetch(`/api/carts/${cid}/product/${pid}`, { method: "POST" });
+        const data = await res.json();
+        alert(data.payload);
+    })
+});
+</script>

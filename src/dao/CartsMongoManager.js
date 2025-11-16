@@ -52,6 +52,14 @@ export class CartsMongoManager {
         ).lean();
     }
 
+    static async updateAllProducts(cid, products) {
+        return await cartsModel.findByIdAndUpdate(
+            cid,
+            { products },
+            { new: true }
+        ).lean();
+    }
+
     static async deleteProductFromCart(cid, pid) {
         return await cartsModel.findByIdAndUpdate(
             cid,

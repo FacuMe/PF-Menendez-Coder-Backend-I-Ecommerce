@@ -21,4 +21,8 @@ export class ProductsMongoManager{
     static async deleteProduct(id){
         return await productsModel.findByIdAndDelete(id).lean();
     }
+
+    static getPaginatedProducts(filter, options) {
+        return productsModel.paginate(filter, options);
+    }
 }
