@@ -80,5 +80,16 @@
                "img1.jpg",
                "img2.jpg"
           ]
+     },
+     {
+          "id": 11,
+          "title": "remera termica",
+          "description": "remera termica",
+          "code": "L0123",
+          "price": 25000,
+          "status": true,
+          "stock": 1,
+          "category": "vestimenta",
+          "thumbnails": []
      }
 ]

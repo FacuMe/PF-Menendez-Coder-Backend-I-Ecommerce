@@ -8,7 +8,7 @@ function renderProducts(products) {
         li.innerHTML = `
             <div class="product-item">
                 <span>${p.title} - $${p.price}</span>
-                <button class="delete-btn" data-id="${p.id}">Eliminar</button>
+                <button class="delete-btn" data-id="${p._id}">Eliminar</button>
             </div>
         `;
         list.appendChild(li);
@@ -18,7 +18,7 @@ function renderProducts(products) {
 document.querySelector(".product-list").addEventListener("click", e => {
     if (e.target.classList.contains("delete-btn")) {
         const id = e.target.getAttribute("data-id");
-        socket.emit("delete-product", Number(id));
+        socket.emit("delete-product", id);
     }
 });
 

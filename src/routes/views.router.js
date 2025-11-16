@@ -1,11 +1,11 @@
-const { ProductsManager } = require('../dao/ProductsManager.js');
+import { Router } from "express";
+import { ProductsMongoManager } from "../dao/ProductsMongoManager.js";
 
-const Router=require('express').Router;
-const router=Router();
+const router = Router();
 
 router.get('/', async(req, res)=>{
     try {
-        let products= await ProductsManager.getProducts();
+        let products= await ProductsMongoManager.getProducts();
 
         res.render("home", {
             products
@@ -18,7 +18,7 @@ router.get('/', async(req, res)=>{
 
 router.get("/realtimeproducts", async(req, res)=>{
     try {
-        let products=await ProductsManager.getProducts();
+        let products=await ProductsMongoManager.getProducts();
 
         res.render("realTimeProducts", {
             products
@@ -30,4 +30,4 @@ router.get("/realtimeproducts", async(req, res)=>{
 })
 
 
-module.exports=router;
+export default router;
